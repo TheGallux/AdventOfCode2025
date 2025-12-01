@@ -1,5 +1,7 @@
 __pycache__
+*.swp
 
 dayN.txt
 
-*.swp
+tests/*.txt
+!tests/exemples/*.txt
