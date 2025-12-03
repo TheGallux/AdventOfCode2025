@@ -54,8 +54,13 @@ def solve_part2(path: str) -> int:
 
     return counter
 
-print("Exemple Part 1:", solve_part1(exemple))
-print("Exemple Part 2:", solve_part2(exemple))
+value_ex1 = solve_part1(exemple)
+print("Exemple Part 1:", value_ex1)
+assert value_ex1 == 3
+
+value_ex2 = solve_part2(exemple)
+print("Exemple Part 2:", value_ex2)
+assert value_ex2 == 6
 
 print()
 print()

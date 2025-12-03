@@ -1,5 +1,4 @@
-exemple_part1 = "data/exemples/dayN_part1.txt"
-exemple__part1 = "data/exemples/dayN_part2.txt"
+exemple = "data/exemples/dayN.txt"
 
 path_data = "data/dayN.txt"
 
@@ -24,8 +23,16 @@ def solve_part2(path: str) -> int:
 
     return None
 
-print("Exemple Part 1:", solve_part1(exemple_part1))
-print("Exemple Part 2:", solve_part2(exemple_part2))
+value_ex1 = solve_part1(exemple)
+print("Exemple Part 1:", value_ex1)
+assert value_ex1 == None
+
+value_ex2 = solve_part2(exemple)
+print("Exemple Part 2:", value_ex2)
+assert value_ex2 == None
+
+print()
+print()
 
 print("PART 1:", solve_part1(path_data))
 print("-------")
