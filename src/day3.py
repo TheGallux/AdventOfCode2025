@@ -29,23 +29,23 @@ def solve_part1(path: str) -> int:
 def solve_part2(path: str) -> int:
     input = parse(path)
 
-    def biggest_substring(L):
-        big = []
+    def biggest_substring(arr):
+        pile = []
+        i = len(arr) - 12
 
-        return sum([10**i * big[len(L) - 1 - i] for i in range(len(big))])
+        for c in arr:
+            while pile != [] and c > pile[-1] and i > 0:
+                pile.pop()
+                i -= 1
+            pile.append(c)
+
+        pile = pile[:12]
+
+        return sum([10**i * pile[11 - i] for i in range(len(pile))])
 
     S = 0
-
-    exp = ["987654321111", "811111111119", "434234234278", "434234234278"]
     for line in input:
-        print("===", ''.join(list(map(str,line))))
-        s = biggest_substring(line)
-        print("   ", exp[0])
-        exp = exp[1:]
-        print("   ",s)
-        S += s
-
-    #print(biggest_substring([3, 4, 2, 2, 4, 4, 5, 3, 3, 6, 2, 3, 5, 8, 4, 2, 7, 4, 7, 2, 2, 6, 6, 2, 3, 9, 7, 9, 4, 5, 1, 2, 8, 4, 6, 4, 4, 7, 8, 8, 5, 9, 3, 5, 5, 6, 2, 3, 4, 5, 6, 3, 4, 8, 3, 7, 5, 5, 4, 5, 8, 5, 6, 3, 4, 7, 7, 8, 7, 7, 5, 8, 5, 6, 9, 2, 7, 7, 4, 5, 1, 9, 4, 8, 7, 7, 7, 5, 5, 5, 3, 8, 2, 4, 5, 9, 1, 7, 4, 5]))
+        S += biggest_substring(line)
 
     return S
 
