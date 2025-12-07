@@ -39,54 +39,22 @@ def solve_part1(path: str) -> int:
 
     return counter
 
-def solve_part2(path: str) -> int: # 320924701371383 is too low
-    input = parse(path)
-    ranges, _ = input
+def solve_part2(path: str) -> int:
+    ranges, _ = parse(path)
 
-    # removed l2, r2 when it exists l1, r1 such as
-    # --|-----|-----|----|---
-    #  l1    l2    r2   l1
-    to_delete = []
-    for i in range(len(ranges)):
-        l, r = ranges[i]
-        for j in range(len(ranges)):
-            if i == j:
-                continue
-            l2, r2 = ranges[j]
-            if (l >= l2) and (r <= r2):
-                to_delete.append(i)
-                break
-
-    for i in to_delete[::-1]:
-        ranges.pop(i)
-
-    """ old_merge
-    changed = -1
-    while changed != 0:
-        changed = 0
-        for i in range(len(ranges)):
-            l1, r1 = ranges[i]
-            for j in range(i + 1, len(ranges)):
-                l2, r2 = ranges[j]
-                if (l1 < l2) and (r1 < r2) and (l2 < r1):
-                    ranges[j] = (r1 + 1, r2)
-                    changed += 1
-                if (l1 > l2) and (r1 > r2) and (l1 < r2):
-                    ranges[i] = (r2 + 1, r1)
-                    changed += 1
-    """
-    # TODO: implement this https://preview.redd.it/2025-day-5-a-fast-algorithm-v0-3uwsqtohjc5g1.gif?width=600&auto=webp&s=fe3bb46f7c10b1970504b22d105c98144c93201c
-    ranges.sort(key=lambda couple: couple[0])
-    for i in range(1, len(ranges)):
-        i = len(ranges) - i - 1
-        l1, r1 = ranges[i]
-        l2, r2 = ranges[i - 1]
-
-    counter = 0
+    ranges.sort(key=lambda x: x[0])
+    merged = []
     for l, r in ranges:
-        counter += r - l + 1
+        if not merged:
+            merged.append((l, r))
+        else:
+            last_l, last_r = merged[-1]
+            if l <= last_r + 1:
+                merged[-1] = (last_l, max(last_r, r))
+            else:
+                merged.append((l, r))
 
-    return counter
+    return sum(r - l + 1 for l, r in merged)
 
 value_ex1 = solve_part1(exemple)
 print("Exemple Part 1:", value_ex1)
