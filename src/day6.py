@@ -31,18 +31,38 @@ def parse2(path: str) -> list[str]:
 
     with open(path, 'r') as file:
         for line in file:
-            L.append(line.strip())
+            L.append(line.replace('\n', ''))
 
-    L = [line for line in L[:-1]] + [[o for o in L[-1].split(" ") if o != '']]
+    ops = [o for o in L[-1].split(" ") if o != '']
+    L = L[:-1]
+    assert all(len(L[0]) == len(L[i]) for i in range(1, len(L)))
 
-    return L
+    tab = [['' for _ in range(len(L))] for _ in range(len(ops))]
+
+    for i in range(len(L)):
+        c = 0
+        l = 0
+        for j in range(len(L[0])):
+            if all(L[k][j] == ' ' for k in range(len(L))):
+                c += 1
+                l = 0
+                continue
+
+            if (L[i][j].isdigit()):
+                tab[c][l] += L[i][j]
+            l += 1
+
+
+    return tab + [ops]
+
 
 def solve_part2(path: str) -> int:
     input = parse2(path)
 
-    print(input)
+    for j in range(len(input) - 1):
+        input[j] = input[-1][j].join(input[j])
 
-    return None
+    return sum(eval(column) for column in input[:-1])
 
 value_ex1 = solve_part1(exemple)
 print("Exemple Part 1:", value_ex1)
