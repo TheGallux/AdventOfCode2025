@@ -35,23 +35,31 @@ def parse2(path: str) -> list[str]:
 
     ops = [o for o in L[-1].split(" ") if o != '']
     L = L[:-1]
-    assert all(len(L[0]) == len(L[i]) for i in range(1, len(L)))
 
-    tab = [['' for _ in range(len(L))] for _ in range(len(ops))]
+    empty_columns = [all(L[k][j] == ' ' for k in range(len(L))) for j in range(len(L[0]))]
 
+    tab =[['' for _ in range(len(L))] for _ in range(len(ops))]
     for i in range(len(L)):
+        j = 0
         c = 0
-        l = 0
-        for j in range(len(L[0])):
-            if all(L[k][j] == ' ' for k in range(len(L))):
+        r = 0
+        while j < len(L[0]):
+            if empty_columns[j]:
                 c += 1
-                l = 0
-                continue
+                r = 0
+                while j < len(L[0]) and empty_columns[j]:
+                    j += 1
+                if j >= len(L[0]):
+                    break
 
-            if (L[i][j].isdigit()):
-                tab[c][l] += L[i][j]
-            l += 1
+            if L[i][j].isdigit():
+                pass
+                tab[c][r] += L[i][j]
+            r += 1
 
+            j += 1
+
+    tab = [[digit for digit in line if digit != ''] for line in tab]
 
     return tab + [ops]
 
